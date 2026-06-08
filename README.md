@@ -4,8 +4,8 @@ A TinyML project that identifies fruit classes from color sensor readings and ru
 
 This repository combines three parts of a complete TinyML workflow:
 - **data collection on-device** with an APDS-9960 color sensor
-- **model training in Python** inside the notebook at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/Color_to_Fruits.ipynb`
-- **embedded inference with emlearn** in the Arduino sketch at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_to_fruits_identifier/color_to_fruits_identifier.ino`
+- **model training in Python** inside the notebook at `Color_to_Fruits.ipynb`
+- **embedded inference with emlearn** in the Arduino sketch at `color_to_fruits_identifier/color_to_fruits_identifier.ino`
 
 ## Project goal
 
@@ -17,7 +17,7 @@ The project uses reflected light measurements from fruit surfaces to classify a 
 - Lemon
 - Orange
 
-The dataset in `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/dataset.csv` contains **600 labeled samples**, balanced across the six classes.
+The dataset in `dataset.csv` contains **600 labeled samples**, balanced across the six classes.
 
 ## Why this is a TinyML project
 
@@ -36,7 +36,7 @@ These features are small enough for microcontroller inference while still carryi
 ## TinyML workflow
 
 ### 1. Collect labeled color data
-The sketch at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_features_collector/color_features_collector.ino`:
+The sketch at `color_features_collector/color_features_collector.ino`:
 - prompts for the fruit label and number of samples over Serial
 - turns on the RGB LEDs for consistent illumination
 - reads color and proximity data from the APDS-9960 sensor
@@ -44,7 +44,7 @@ The sketch at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_features_c
 - prints labeled CSV rows for dataset creation
 
 ### 2. Train and evaluate the model
-The notebook at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/Color_to_Fruits.ipynb` walks through the ML pipeline:
+The notebook at `Color_to_Fruits.ipynb` walks through the ML pipeline:
 - load and inspect the dataset
 - visualize samples in RGB and HSV color space
 - separate features and labels
@@ -56,13 +56,13 @@ The notebook at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/Color_to_Fruit
 
 ### 3. Export the model for embedded deployment
 After training, the notebook converts the classifier with **emlearn** and generates embedded artifacts used by Arduino code:
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_to_fruits_identifier/StandardScaler.h`
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_to_fruits_identifier/NeuralNetworkClassifier.h`
+- `color_to_fruits_identifier/StandardScaler.h`
+- `color_to_fruits_identifier/NeuralNetworkClassifier.h`
 
 This step preserves the same preprocessing and model behavior used during notebook training.
 
 ### 4. Run inference on the board
-The deployment sketch at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_to_fruits_identifier/color_to_fruits_identifier.ino`:
+The deployment sketch at `color_to_fruits_identifier/color_to_fruits_identifier.ino`:
 - reads live APDS-9960 sensor values
 - rebuilds the same six input features used during training
 - applies the exported standard scaler
@@ -71,12 +71,12 @@ The deployment sketch at `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color
 
 ## Repository structure
 
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/Color_to_Fruits.ipynb` - notebook for training, evaluation, and model export
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/dataset.csv` - labeled color dataset used for model development
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/dataset.txt` - text export of the dataset
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_features_collector/` - Arduino sketch for collecting labeled samples
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/color_to_fruits_identifier/` - Arduino inference sketch and generated model headers
-- `/tmp/workspace/TronixLab/emlearn-Color-to-Fruits/libraries/` - bundled libraries used by the Arduino sketches
+- `Color_to_Fruits.ipynb` - notebook for training, evaluation, and model export
+- `dataset.csv` - labeled color dataset used for model development
+- `dataset.txt` - text export of the dataset
+- `color_features_collector/` - Arduino sketch for collecting labeled samples
+- `color_to_fruits_identifier/` - Arduino inference sketch and generated model headers
+- `libraries/` - bundled libraries used by the Arduino sketches
 
 ## Main components
 
